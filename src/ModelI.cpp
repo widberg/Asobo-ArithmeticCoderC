@@ -22,6 +22,8 @@ void ModelI::Process( fstream *source, fstream *target, ModeE mode )
 
 		mAC.EncodeFinish();
 
+		char zero = 0;
+		mTarget->write(&zero, sizeof(zero));
 		mTarget->seekp(0, std::ios::end);
 		mCompressedSize = (unsigned int)mTarget->tellp();
 		mTarget->seekp(0, std::ios::beg);

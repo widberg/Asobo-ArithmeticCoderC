@@ -1,7 +1,7 @@
 #include "ModelOrder1C.h"
 
-#include <iomanip>
-#include <iostream>
+//#include <iomanip>
+//#include <iostream>
 
 ModelOrder1C::ModelOrder1C()
 {
@@ -37,7 +37,7 @@ void ModelOrder1C::Encode()
 {
 	int i = 0;
 
-	std::cout << std::hex << std::uppercase;
+	//std::cout << std::hex << std::uppercase;
 	unsigned char symbol;
 	while(mSource->read(reinterpret_cast<char*>(&symbol), sizeof(symbol)))
 	{
@@ -165,25 +165,25 @@ void ModelOrder1C::Decode()
 
 	int i = 0;
 
-	std::cout << std::hex << std::uppercase;
+	//std::cout << std::hex << std::uppercase;
 
 	do
 	{
-		std::cout << "--- " << ++i << '\n';
+		//std::cout << "--- " << ++i << '\n';
 
-		std::cout << "total =" << mCumCount->mTotal << '\n';
+		//std::cout << "total =" << mCumCount->mTotal << '\n';
 
 		unsigned int defaul = mCumCount->mDefault;
 
 		// read value
 		unsigned int value = mAC.DecodeTarget( mCumCount->mTotal );
 
-		std::cout << "value =" << value << '\n';
+		//std::cout << "value =" << value << '\n';
 
 		unsigned int low_count, high_count;
 		symbol = determineSymbol(value, low_count, high_count);
 
-		std::cout << "symbol=" << symbol << '\n';
+		//std::cout << "symbol=" << symbol << '\n';
 
 		_ASSERT(symbol >= 0 && symbol <= 256);
 		// write symbol
@@ -194,8 +194,8 @@ void ModelOrder1C::Decode()
 				break;
 		}
 
-		std::cout << "lowcnt=" << low_count << '\n';
-		std::cout << "higcnt=" << high_count << '\n';
+		//std::cout << "lowcnt=" << low_count << '\n';
+		//std::cout << "higcnt=" << high_count << '\n';
 		// adapt decoder
 		mAC.Decode( low_count, high_count);
 

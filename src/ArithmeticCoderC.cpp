@@ -1,7 +1,7 @@
 #include "ArithmeticCoderC.h"
 #include "tools.h"
 
-#include <iostream>
+//#include <iostream>
 
 // constants to split the number space of 32 bit integers
 // most significant bit kept free to prevent overflows
@@ -194,13 +194,13 @@ void ArithmeticCoderC::Decode( const unsigned int low_count,
 	// update lower bound
 	mLow = mLow + mStep * low_count;
 
-	std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	std::cout << "mStep =" << mStep << '\n';
-	std::cout << "mBuf  =" << mBuffer << '\n';
-	std::cout << "mScale=" << mScale << '\n';
-	std::cout << "mHigh =" << mHigh << '\n';
-	std::cout << "mLow  =" << mLow << '\n';
+	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
+	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
+	//std::cout << "mStep =" << mStep << '\n';
+	//std::cout << "mBuf  =" << mBuffer << '\n';
+	//std::cout << "mScale=" << mScale << '\n';
+	//std::cout << "mHigh =" << mHigh << '\n';
+	//std::cout << "mLow  =" << mLow << '\n';
 
 	// e1/e2 mapping
 	while( ( mHigh < g_Half ) || ( mLow >= g_Half ) )
@@ -220,13 +220,13 @@ void ArithmeticCoderC::Decode( const unsigned int low_count,
 		mScale = 0;
 	}
 
-	std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	std::cout << "mStep =" << mStep << '\n';
-	std::cout << "mBuf  =" << mBuffer << '\n';
-	std::cout << "mScale=" << mScale << '\n';
-	std::cout << "mHigh =" << mHigh << '\n';
-	std::cout << "mLow  =" << mLow << '\n';
+	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
+	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
+	//std::cout << "mStep =" << mStep << '\n';
+	//std::cout << "mBuf  =" << mBuffer << '\n';
+	//std::cout << "mScale=" << mScale << '\n';
+	//std::cout << "mHigh =" << mHigh << '\n';
+	//std::cout << "mLow  =" << mLow << '\n';
 
 	// Wrong Begins
 	// Uses g_Half instead of g_FirstQuarter
@@ -241,11 +241,11 @@ void ArithmeticCoderC::Decode( const unsigned int low_count,
 
 	// Wrong Ends
 
-	std::cout << "mBBuf  =" << (unsigned int)mBitBuffer << '\n';
-	std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	std::cout << "mStep =" << mStep << '\n';
-	std::cout << "mBuf  =" << mBuffer << '\n';
-	std::cout << "mScale=" << mScale << '\n';
-	std::cout << "mHigh =" << mHigh << '\n';
-	std::cout << "mLow  =" << mLow << '\n';
+	//std::cout << "mBBuf  =" << (unsigned int)mBitBuffer << '\n';
+	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
+	//std::cout << "mStep =" << mStep << '\n';
+	//std::cout << "mBuf  =" << mBuffer << '\n';
+	//std::cout << "mScale=" << mScale << '\n';
+	//std::cout << "mHigh =" << mHigh << '\n';
+	//std::cout << "mLow  =" << mLow << '\n';
 }
