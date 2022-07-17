@@ -1,8 +1,6 @@
 #include "ArithmeticCoderC.h"
 #include "tools.h"
 
-//#include <iostream>
-
 // constants to split the number space of 32 bit integers
 // most significant bit kept free to prevent overflows
 const unsigned int g_FirstQuarter  = 0x20000000;
@@ -75,7 +73,6 @@ void ArithmeticCoderC::Encode( const unsigned int low_count,
 															 const unsigned int total )
 // total < 2^29
 {
-	// Begin Verified
 	// partition number space into single steps
 	mStep = ( mHigh - mLow + 1 ) / total; // interval open at the top => +1
 
@@ -84,15 +81,6 @@ void ArithmeticCoderC::Encode( const unsigned int low_count,
 
 	// update lower bound
 	mLow = mLow + mStep * low_count;
-	// End Verified
-
-	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	//std::cout << "mStep =" << mStep << '\n';
-	//std::cout << "mBuf  =" << mBuffer << '\n';
-	//std::cout << "mScale=" << mScale << '\n';
-	//std::cout << "mHigh =" << mHigh << '\n';
-	//std::cout << "mLow  =" << mLow << '\n';
 
 	// apply e1/e2 mapping
 	while( ( mHigh < g_Half ) || ( mLow >= g_Half ) )
@@ -119,14 +107,6 @@ void ArithmeticCoderC::Encode( const unsigned int low_count,
 		}
 	}
 
-	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	//std::cout << "mStep =" << mStep << '\n';
-	//std::cout << "mBuf  =" << mBuffer << '\n';
-	//std::cout << "mScale=" << mScale << '\n';
-	//std::cout << "mHigh =" << mHigh << '\n';
-	//std::cout << "mLow  =" << mLow << '\n';
-
 	// e3
 	while( ( g_FirstQuarter <= mLow ) && ( mHigh < g_ThirdQuarter ) )
 	{
@@ -135,14 +115,6 @@ void ArithmeticCoderC::Encode( const unsigned int low_count,
 		mLow = 2 * mLow - g_Half;
 		mHigh = 2 * mHigh - g_Half + 1;
 	}
-
-	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	//std::cout << "mStep =" << mStep << '\n';
-	//std::cout << "mBuf  =" << mBuffer << '\n';
-	//std::cout << "mScale=" << mScale << '\n';
-	//std::cout << "mHigh =" << mHigh << '\n';
-	//std::cout << "mLow  =" << mLow << '\n';
 }
 
 void ArithmeticCoderC::EncodeFinish()
@@ -166,7 +138,6 @@ void ArithmeticCoderC::EncodeFinish()
 	SetBitFlush();
 }
 
-// Verified
 void ArithmeticCoderC::DecodeStart()
 {
 	// Fill buffer with bits from the input stream
@@ -184,7 +155,6 @@ unsigned int ArithmeticCoderC::DecodeTarget( const unsigned int total )
 	return ( mBuffer - mLow ) / mStep;
 }
 
-// Diff
 void ArithmeticCoderC::Decode( const unsigned int low_count,
 															 const unsigned int high_count )
 {
@@ -193,14 +163,6 @@ void ArithmeticCoderC::Decode( const unsigned int low_count,
 
 	// update lower bound
 	mLow = mLow + mStep * low_count;
-
-	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	//std::cout << "mStep =" << mStep << '\n';
-	//std::cout << "mBuf  =" << mBuffer << '\n';
-	//std::cout << "mScale=" << mScale << '\n';
-	//std::cout << "mHigh =" << mHigh << '\n';
-	//std::cout << "mLow  =" << mLow << '\n';
 
 	// e1/e2 mapping
 	while( ( mHigh < g_Half ) || ( mLow >= g_Half ) )
@@ -220,16 +182,6 @@ void ArithmeticCoderC::Decode( const unsigned int low_count,
 		mScale = 0;
 	}
 
-	//std::cout << "mBBuf =" << (unsigned int)mBitBuffer << '\n';
-	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	//std::cout << "mStep =" << mStep << '\n';
-	//std::cout << "mBuf  =" << mBuffer << '\n';
-	//std::cout << "mScale=" << mScale << '\n';
-	//std::cout << "mHigh =" << mHigh << '\n';
-	//std::cout << "mLow  =" << mLow << '\n';
-
-	// Wrong Begins
-	// Uses g_Half instead of g_FirstQuarter
 	// e3 mapping
 	while( ( g_FirstQuarter <= mLow ) && ( mHigh < g_ThirdQuarter ) )
 	{
@@ -238,14 +190,4 @@ void ArithmeticCoderC::Decode( const unsigned int low_count,
 		mHigh = 2 * mHigh - g_Half + 1;
 		mBuffer = 2 * mBuffer - g_Half + GetBit();
 	}
-
-	// Wrong Ends
-
-	//std::cout << "mBBuf  =" << (unsigned int)mBitBuffer << '\n';
-	//std::cout << "mBufC =" << (unsigned int)mBitCount << '\n';
-	//std::cout << "mStep =" << mStep << '\n';
-	//std::cout << "mBuf  =" << mBuffer << '\n';
-	//std::cout << "mScale=" << mScale << '\n';
-	//std::cout << "mHigh =" << mHigh << '\n';
-	//std::cout << "mLow  =" << mLow << '\n';
 }

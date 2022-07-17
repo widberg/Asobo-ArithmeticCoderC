@@ -1,8 +1,5 @@
 #include "ModelOrder1C.h"
 
-//#include <iomanip>
-//#include <iostream>
-
 ModelOrder1C::ModelOrder1C()
 {
 	for( unsigned int i=0; i<256; i++ )
@@ -37,57 +34,34 @@ void ModelOrder1C::Encode()
 {
 	int i = 0;
 
-	//std::cout << std::hex << std::uppercase;
 	unsigned char symbol;
 	while(mSource->read(reinterpret_cast<char*>(&symbol), sizeof(symbol)))
 	{
-		//std::cout << "--- " << ++i << '\n';
-
 		unsigned char ret = 0;
 		do
 		{
-			//std::cout << "---\n";
-			//std::cout << "symbol=" << (unsigned int)symbol << '\n';
-			//std::cout << "total =" << mCumCount->mTotal << '\n';
-
 			unsigned int low_count, high_count, total;
 			ret = CumulateFreqencies(symbol, low_count, high_count, total);
-
-			//std::cout << "lowcnt=" << low_count << '\n';
-			//std::cout << "higcnt=" << high_count << '\n';
-			//std::cout << "total =" << total << '\n';
 
 			mAC.Encode(low_count, high_count, total);
 		}
 		while (ret == 254);
 
-		// update model
 		UpdateModel(symbol);
 	}
 
 	auto pos = mTarget->tellp();
 	while (pos == mTarget->tellp())
 	{
-		//std::cout << "--- " << ++i << '\n';
-
 		unsigned char ret = 0;
 		do
 		{
-			//std::cout << "---\n";
-			//std::cout << "symbol=" << (unsigned int)symbol << '\n';
-			//std::cout << "total =" << mCumCount->mTotal << '\n';
-
 			unsigned int low_count, high_count, total;
 			ret = CumulateFreqencies(0, low_count, high_count, total);
-
-			//std::cout << "lowcnt=" << low_count << '\n';
-			//std::cout << "higcnt=" << high_count << '\n';
-			//std::cout << "total =" << total << '\n';
 
 			mAC.Encode(low_count, high_count, total);
 		} while (ret == 254);
 
-		// update model
 		UpdateModel(0);
 	}
 }
@@ -151,8 +125,6 @@ unsigned int ModelOrder1C::determineSymbol(unsigned int value, unsigned int &low
 
 	high_count = low_count + mCumCount->mCumCount[symbol];
 
-	_ASSERT(symbol >= 0 && symbol <= 256);
-
 	if (symbol == 254 && mCumCount->mDefault == 0)
 		mCumCount = &mCumCountCurrent;
 	
@@ -163,30 +135,15 @@ void ModelOrder1C::Decode()
 {
 	unsigned int symbol;
 
-	int i = 0;
-
-	//std::cout << std::hex << std::uppercase;
-
 	do
 	{
-		//std::cout << "--- " << ++i << '\n';
-
-		//std::cout << "total =" << mCumCount->mTotal << '\n';
-
 		unsigned int defaul = mCumCount->mDefault;
 
-		// read value
 		unsigned int value = mAC.DecodeTarget( mCumCount->mTotal );
-
-		//std::cout << "value =" << value << '\n';
 
 		unsigned int low_count, high_count;
 		symbol = determineSymbol(value, low_count, high_count);
 
-		//std::cout << "symbol=" << symbol << '\n';
-
-		_ASSERT(symbol >= 0 && symbol <= 256);
-		// write symbol
 		if (symbol < 256 && (symbol != 254 || defaul != 0))
 		{
 			mTarget->write(reinterpret_cast<char*>(&symbol), sizeof(char));
@@ -194,9 +151,6 @@ void ModelOrder1C::Decode()
 				break;
 		}
 
-		//std::cout << "lowcnt=" << low_count << '\n';
-		//std::cout << "higcnt=" << high_count << '\n';
-		// adapt decoder
 		mAC.Decode( low_count, high_count);
 
 		if (symbol != 254 || defaul != 0)
